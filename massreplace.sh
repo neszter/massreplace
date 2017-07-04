@@ -3,7 +3,7 @@
 #
 #Authors: Michele Modolo, Eszter Nemeth
 #Date: 04/07/2017
-#GIT-Project: massreplace (owned by my friend Eszter N.)
+#GIT-Project: massreplace (owned by my friend Eszter)
 #
 #This scripts lists all the files in a given directory and replace some strings with other strings in each file 
 #
