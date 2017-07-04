@@ -1,7 +1,7 @@
 #!/bin/sh
 #https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liabo/liaboconcept.htm
 #
-#Author: Michele Modolo
+#Authors: Michele Modolo, Eszter Nemeth
 #Date: 04/07/2017
 #GIT-Project: massreplace (owned by my friend Eszter N.)
 #
