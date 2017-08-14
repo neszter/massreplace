@@ -1,0 +1,20 @@
+-- victim_cleans_ratio >>>>
+--You do not want this over 40%, but also not too low. If this ratio is low, it may indicate that you have defined too many page cleaners NUM_IOCLEANERS. If your chngpgs_thresh is set too low, you may be writing out pages that you will dirty later. Aggressive cleaning defeats one purpose of the buffer pool, that is to defer writing to the last possible moment. If this ratio is high, it may indicate that you have too few page cleaners defined, or your bufferpool is too small. Too few page cleaners will increase recovery time after failures.
+--
+-- Threshold_Cleans_Ratio >>>>
+--How often a bufferpool page cleaner was invoked because a buffer pool had reached the dirty page threshold criterion for the database (dirty pages contain data that has been changed in the bufferpool, but not yet written to disk). The threshold is set by the chngpgs_thresh configuration parameter. It is a percentage applied to the buffer pool size. When the number of dirty pages in the pool exceeds this value, the cleaners are triggered.
+--If chngpgs_thresh is set too low, pages might be written out too early, requiring them to be read back in. If set too high, then too many pages may accumulate, requiring users to write out pages synchronously in a long burst, tying up other processing (with poor resulting performance).
+--If this ratio is low, it may indicate that you have defined too many page cleaners. Or CHNGPGS_THRESH database configuration parameter is too high. If this ratio is high, it may indicate that you have too few page cleaners defined. Either way overall performance is impacted. Bufferpool size is also involved.
+--
+-- Log_Cleans_Ratio >>>>
+--Number of times LSN gap cleaner trigger as percentage of total cleaners
+--When LSN gap cleaner triggers (LCR approaches 100%), check for performance issues on the database. If you have configured very large logs, softmax may need to be successively lowered until LSN gap cleaner triggers more frequently. If there is strong correlation, it might be necessary to use the new DB2 proactive page cleaning feature DB2_USE_ALTERNATE_PAGE_CLEANING (registry setting).
+--
+--
+--select SNAPSHOT_TIMESTAMP
+--,dec(((float(POOL_DRTY_PG_STEAL_CLNS)/(float(POOL_DRTY_PG_STEAL_CLNS)+float(POOL_LSN_GAP_CLNS)+float(POOL_DRTY_PG_THRSH_CLNS))*100)),10,4) as Buff_Page_Sync_Write_victim_cleans_ratio
+--,dec(((float(POOL_DRTY_PG_THRSH_CLNS)/(float(POOL_DRTY_PG_STEAL_CLNS)+float(POOL_LSN_GAP_CLNS)+float(POOL_DRTY_PG_THRSH_CLNS))*100)),10,4) as Buff_Page_Threshold_Cleans_Ratio
+--,dec(((float(POOL_LSN_GAP_CLNS)/(float(POOL_DRTY_PG_STEAL_CLNS)+float(POOL_LSN_GAP_CLNS)+float(POOL_DRTY_PG_THRSH_CLNS))*100)),10,4) as Log_Cleans_Ratio
+--from SYSIBMADM.SNAPDB
+--where  (float(POOL_DRTY_PG_STEAL_CLNS)+float(POOL_LSN_GAP_CLNS)+float(POOL_DRTY_PG_THRSH_CLNS)) > 0
+--;
